@@ -12,6 +12,7 @@ import img3 from "./assets/img3.png";
 import img4 from "./assets/img4.png";
 import img5 from "./assets/img5.png";
 import img6 from "./assets/img6.png";
+import { sendDataToGA } from "./utils/events.ts";
 
 interface Product {
   title: string;
@@ -71,14 +72,19 @@ export const App = () => {
   const [thxShow, setThx] = useState(LS.getItem(LSKeys.ShowThx, false));
   const [selected, setSelected] = useState<string>("");
   const [price, setPrice] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const submit = () => {
-    // window.gtag("event", "6251_get_sub", {
-    //   variant_name: "6251_2",
-    // });
+    setLoading(true);
 
-    LS.setItem(LSKeys.ShowThx, true);
-    setThx(true);
+    sendDataToGA({
+      merch: selected,
+      price: Number(price.replace(" ", "").trim()),
+    }).then(() => {
+      setLoading(false);
+      LS.setItem(LSKeys.ShowThx, true);
+      setThx(true);
+    });
   };
 
   if (thxShow) {
@@ -169,6 +175,7 @@ export const App = () => {
 
       <div className={appSt.bottomBtn}>
         <ButtonMobile
+          loading={loading}
           block
           view="primary"
           href=""
