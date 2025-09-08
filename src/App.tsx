@@ -13,6 +13,7 @@ import img4 from "./assets/img4.png";
 import img5 from "./assets/img5.png";
 import img6 from "./assets/img6.png";
 import { sendDataToGA } from "./utils/events.ts";
+import { ThxLayout } from "./thx/ThxLayout.tsx";
 
 interface Product {
   title: string;
@@ -60,14 +61,6 @@ const products: Array<Product> = [
   },
 ];
 
-const alfaSmart = "https://online.alfabank.ru";
-
-const Redirect = () => {
-  window.location.href = alfaSmart;
-
-  return null;
-};
-
 export const App = () => {
   const [thxShow, setThx] = useState(LS.getItem(LSKeys.ShowThx, false));
   const [selected, setSelected] = useState<string>("");
@@ -88,7 +81,7 @@ export const App = () => {
   };
 
   if (thxShow) {
-    return <Redirect />;
+    return <ThxLayout />;
   }
 
   return (
